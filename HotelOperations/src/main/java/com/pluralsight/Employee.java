@@ -1,12 +1,14 @@
 package com.pluralsight;
 
+import java.time.LocalTime;
+
 public class Employee {
     private int employeeId;
     private String name;
     private String department;
     private double payRate;
     private double hoursWorked;
-    private double punchInTime = -1; // -1 means not punched in
+    private double lastPunchIn;
 
     public Employee(int employeeId, String name, String department, double payRate) {
         this.employeeId = employeeId;
@@ -16,35 +18,37 @@ public class Employee {
         this.hoursWorked = 0;
     }
 
+    public void punchIn(double time) {
+        lastPunchIn = time;
+    }
+
+    public void punchOut(double time) {
+        double hours = time - lastPunchIn;
+        hoursWorked += hours;
+    }
+
+    // Overloaded - no parameter
+    public void punchIn() {
+        LocalTime now = LocalTime.now();
+        lastPunchIn = now.getHour() + now.getMinute() / 60.0;
+    }
+
+    public void punchOut() {
+        LocalTime now = LocalTime.now();
+        double time = now.getHour() + now.getMinute() / 60.0;
+        double hours = time - lastPunchIn;
+        hoursWorked += hours;
+    }
+
     public double getTotalPay() {
         return hoursWorked * payRate;
     }
 
     public double getRegularHours() {
-        return Math.min(40, hoursWorked);
+        return Math.min(hoursWorked, 40);
     }
 
     public double getOvertimeHours() {
         return Math.max(0, hoursWorked - 40);
-    }
-
-    public void punchIn(double time) {
-        if (punchInTime != -1) {
-            System.out.println("Already punched in!");
-        } else {
-            punchInTime = time;
-            System.out.println(name + " punched in at " + time);
-        }
-    }
-
-    public void punchOut(double time) {
-        if (punchInTime == -1) {
-            System.out.println("You need to punch in first!");
-        } else {
-            double hours = time - punchInTime;
-            hoursWorked += hours;
-            System.out.println(name + " punched out at " + time + ", worked " + hours + " hours.");
-            punchInTime = -1;
-        }
     }
 }
