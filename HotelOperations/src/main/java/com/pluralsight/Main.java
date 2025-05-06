@@ -2,17 +2,17 @@ package com.pluralsight;
 
 public class Main {
     public static void main(String[] args) {
+        // Room test
+        Room room1 = new Room(2, 150.0);
+        room1.checkIn();
+        room1.checkOut();
+        room1.cleanRoom();
 
-        // Testing Room
-        Room room = new Room(2, 150.0, false, false);
-        System.out.println("Is the room available? " + room.isAvailable());
+        // Employee test
+        Employee emp = new Employee(101, "John", "Housekeeping", 15.0);
+        emp.punchIn(9.0);
+        emp.punchOut(17.0);
 
-        // Testing Reservation
-        Reservation reservation = new Reservation("king", 3, true);
-        System.out.println("Reservation total: $" + reservation.getReservationTotal());
-
-        // Testing Employee
-        Employee employee = new Employee(101, "John", "Front Desk", 20.0, 45);
-        System.out.println("Employee total pay: $" + employee.getTotalPay());
+        System.out.println("Total pay: $" + emp.getTotalPay());
     }
 }
